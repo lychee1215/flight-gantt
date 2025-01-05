@@ -19,12 +19,12 @@ The Flight Schedule Display System is a web-based application that visualizes fl
 ### 2.2 Backend Architecture
 - **Framework**: NestJS with TypeScript
 - **API Endpoints**:
-  - POST `/flights` - Create new flight records
+  - POST `/api/flights` - Create new flight records
 
 
   ![Add Flight](./docs/1.png)
 
-  - GET `/flights` - Retrieve flight schedules
+  - GET `/api/flights` - Retrieve flight schedules
 - **Components**:
   - `FlightController`: Handles HTTP requests
   - `FlightService`: Implements business logic

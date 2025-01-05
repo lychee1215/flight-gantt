@@ -13,13 +13,13 @@ export const FlightGantt: React.FC<FlightGanttProps> = ({ data, title }) => {
         <div>
             <h1 className="text-center mb-5">{title}</h1>
             <div className="w-full grid grid-cols-12">
-            <div className="col-span-1">
-                <FlightGanttSide flightNames={flightNames} />
+                <div className="col-span-1">
+                    <FlightGanttSide flightNames={flightNames} />
+                </div>
+                <div className="col-span-10 border overflow-auto">
+                    <FlightGanttSchedule data={data} />
+                </div>
             </div>
-            <div className="col-span-10 border overflow-auto">
-                <FlightGanttSchedule data={data} />
-            </div>
-        </div>
         </div>
     )
 };

@@ -23,7 +23,7 @@ const CheckupPlaneAdapter: Adapter = (flights: Flight[]): FlightGanttData[] => {
       const checkupSchedules: FlightGanttData['schedules'] = [];
 
       for (let i = 0; i < sortedSchedules.length - 1; i ++) {
-        let airport = sortedSchedules[i].title.split(' -> ')[0];
+        let airport = sortedSchedules[i].title.split(' -> ')[1];
         let startTime = sortedSchedules[i].endTime;
         let endTime = sortedSchedules[i + 1].startTime;
         checkupSchedules.push({
