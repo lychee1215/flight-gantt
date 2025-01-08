@@ -60,7 +60,7 @@ export const FlightGanttSchedule: React.FC<FlightGanttScheduleProps> = ({ data }
             <div>
                 {data.map(item => {
                     return (
-                        <div className="h-10 box-border" key={item.name}>
+                        <div style={{ height: `${item.schedules.length * 2.5}rem` }} className="box-border" key={item.name}>
                             <FlightScheduleRow
                             
                                 flightScheduleItems={item.schedules}
@@ -73,7 +73,11 @@ export const FlightGanttSchedule: React.FC<FlightGanttScheduleProps> = ({ data }
                 })}
                 <div>
                     <TimeScaleMark
-                        flightNumber={data.length}
+                        flightNumber={
+                            data.reduce((total, item) => {
+                                return total + item.schedules.length;
+                            }, 0)
+                        }
                         startTime={new Date(mostEarliestStartTime)}
                         endTime={new Date(mostLatestEndTime)}
                         unitHours={3}

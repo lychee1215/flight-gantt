@@ -16,7 +16,7 @@ export const FlightScheduleRow: React.FC<FlightScheduleRowProps> = ({ flightSche
 
     return (
         <div className="w-full relative">
-            {flightScheduleItems.map((flightScheduleItem) => {
+            {flightScheduleItems.map((flightScheduleItem, index) => {
              
                 // Figure out the left
                 const duration = flightScheduleItem.endTime.getTime() - flightScheduleItem.startTime.getTime();
@@ -31,11 +31,12 @@ export const FlightScheduleRow: React.FC<FlightScheduleRowProps> = ({ flightSche
                 return (
                     <div 
                     key={flightScheduleItem.title}
-                    className="h-8 my-1 absolute top-0 flex justify-center items-center"
+                    className="h-8 my-1 absolute flex justify-center items-center"
                     style={{
                         left,
                         width,
-                        backgroundColor: color
+                        backgroundColor: color,
+                        top: `${index * 2.5}rem`
                     }}>
                         {flightScheduleItem.title}
                     </div>

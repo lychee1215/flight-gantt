@@ -1,15 +1,22 @@
 
 interface FlightGanttSideProps {
-    flightNames: string[]
+    airplanes: Array<{
+        name: string;
+        flightsNumber: number
+    }>;
 }
 
-export const FlightGanttSide: React.FC<FlightGanttSideProps> = ({flightNames}) => {
+export const FlightGanttSide: React.FC<FlightGanttSideProps> = ({airplanes}) => {
     return (
         <div className="w-full">
-            {flightNames.map(flightName => {
+            {airplanes.map(airplane => {
                 return (
-                    <div key={flightName} className="h-10 border flex justify-center items-center">
-                        {flightName}
+                    <div key={airplane.name} 
+                        style={{
+                            height: `${airplane.flightsNumber * 2.5}rem`
+                        }}
+                        className="border flex justify-center items-center">
+                        {airplane.name}
                     </div>
                 )
             })}
