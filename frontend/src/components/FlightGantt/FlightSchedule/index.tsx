@@ -3,88 +3,97 @@ import { FlightScheduleItem, FlightScheduleRow } from "./FlightScheduleRow";
 import { TimeScaleMark } from "./TimeScaleMark";
 
 export interface FlightGanttData {
-    name: string;
-    schedules: Array<FlightScheduleItem>;
-    color?: string
+  name: string;
+  schedules: Array<FlightScheduleItem>;
+  color?: string;
 }
 interface FlightGanttScheduleProps {
-    data: FlightGanttData[];
+  data: FlightGanttData[];
 }
-
-
 
 /**
  * Figure out the most long duration
- * @param schedules 
- * @param oneHourWidth 
- * @returns 
+ * @param schedules
+ * @param oneHourWidth
+ * @returns
  */
-const figureOutLongestDuration = (schedules: FlightScheduleItem[][], oneHourWidth: number) => {
+const figureOutLongestDuration = (
+  schedules: FlightScheduleItem[][],
+  oneHourWidth: number
+) => {
+  const allScheduleItems = schedules.flat();
 
-    const allScheduleItems = schedules.flat();
+  let mostEarliestStartTime: number = Number.MAX_SAFE_INTEGER;
+  let mostLatestEndTime: number = 0;
 
-    let mostEarliestStartTime: number = Number.MAX_SAFE_INTEGER;
-    let mostLatestEndTime: number = 0;
-
-    let maxDuration = 0;
-    for (let item of allScheduleItems) {
-        if (item.startTime.getTime() < mostEarliestStartTime) {
-            mostEarliestStartTime = item.startTime.getTime();
-        }
-
-        if (item.endTime.getTime() > mostLatestEndTime) {
-            mostLatestEndTime = item.endTime.getTime();
-        }
+  let maxDuration = 0;
+  for (let item of allScheduleItems) {
+    if (item.startTime.getTime() < mostEarliestStartTime) {
+      mostEarliestStartTime = item.startTime.getTime();
     }
 
-    let duration = getLastHourTime(mostLatestEndTime) + 1000 * 60 * 60 - getLastHourTime(mostEarliestStartTime);
-    if (duration > maxDuration) {
-        maxDuration = duration;
+    if (item.endTime.getTime() > mostLatestEndTime) {
+      mostLatestEndTime = item.endTime.getTime();
     }
+  }
+  let duration =
+    getLastHourTime(mostLatestEndTime) +
+    1000 * 60 * 60 -
+    getLastHourTime(mostEarliestStartTime);
+  if (duration > maxDuration) {
+    maxDuration = duration;
+  }
 
-    const maxDurationHours = maxDuration / 1000 / 60 / 60;
-    const width = maxDurationHours * oneHourWidth;
+  const maxDurationHours = maxDuration / 1000 / 60 / 60;
+  const width = maxDurationHours * oneHourWidth;
 
-    return [width, mostEarliestStartTime, mostLatestEndTime];
-}
+  return [width, mostEarliestStartTime, mostLatestEndTime];
+};
 
-const oneHourWidth = 200;
+const oneHourWidth = 50;
 
-export const FlightGanttSchedule: React.FC<FlightGanttScheduleProps> = ({ data }) => {
-
-    const [width, mostEarliestStartTime, mostLatestEndTime] = figureOutLongestDuration(data.map(flight => flight.schedules), oneHourWidth);
-
-
-    return (
-        <div style={{ width: width + 200 }} className="relative">
-            <div>
-                {data.map(item => {
-                    return (
-                        <div style={{ height: `${item.schedules.length * 2.5}rem` }} className="box-border" key={item.name}>
-                            <FlightScheduleRow
-                            
-                                flightScheduleItems={item.schedules}
-                                mostEarliestStartTime={mostEarliestStartTime}
-                                leftPadding={100}
-                                oneHourWidth={oneHourWidth}
-                                color={item.color} />
-                        </div>
-                    )
-                })}
-                <div>
-                    <TimeScaleMark
-                        flightNumber={
-                            data.reduce((total, item) => {
-                                return total + item.schedules.length;
-                            }, 0)
-                        }
-                        startTime={new Date(mostEarliestStartTime)}
-                        endTime={new Date(mostLatestEndTime)}
-                        unitHours={3}
-                        leftPadding={100}
-                        oneHourWidth={oneHourWidth} />
-                </div>
-            </div>
-        </div>
+export const FlightGanttSchedule: React.FC<FlightGanttScheduleProps> = ({
+  data,
+}) => {
+  const [width, mostEarliestStartTime, mostLatestEndTime] =
+    figureOutLongestDuration(
+      data.map((flight) => flight.schedules),
+      oneHourWidth
     );
+
+  return (
+    <div style={{ width: width + 200 }} className="relative">
+      <div>
+        {data.map((item) => {
+          return (
+            <div
+              style={{ height: `${item.schedules.length * 2.5}rem` }}
+              className="box-border"
+              key={item.name}
+            >
+              <FlightScheduleRow
+                flightScheduleItems={item.schedules}
+                mostEarliestStartTime={mostEarliestStartTime}
+                leftPadding={100}
+                oneHourWidth={oneHourWidth}
+                color={item.color}
+              />
+            </div>
+          );
+        })}
+        <div>
+          <TimeScaleMark
+            flightNumber={data.reduce((total, item) => {
+              return total + item.schedules.length;
+            }, 0)}
+            startTime={new Date(mostEarliestStartTime)}
+            endTime={new Date(mostLatestEndTime)}
+            unitHours={3}
+            leftPadding={100}
+            oneHourWidth={oneHourWidth}
+          />
+        </div>
+      </div>
+    </div>
+  );
 };

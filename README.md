@@ -1,26 +1,34 @@
 # Flight Schedule Display System - Technical Design Document
 
-## 1. System Overview
-The Flight Schedule Display System is a web-based application that visualizes flight and maintenance schedules using Gantt charts. The system consists of a React-based frontend for visualization and a NestJS backend for data management.
+## Initialize the Project
+The project is bootstrapped with Vite and consists of a frontend and backend component. Follow the steps below to set up and run the project.
+
+Begin by clone the project repository to your local machine. Navigate to both the frontend and backend directories to install the necessary dependencies.
+
+```bash
+npm install
+```
+To initialize the React app, run the following command in the frontend directory, and it will be hosted at http://localhost:5173/
+```bash
+cd ../frontend
+npm run dev
+```
+In a seperate terminal, navigate to backend directory and start the backend service, and the backend service will connect to the API hosted on MongoDB Altas.
+```bash
+npm start
+```
+
+##  System Overview
+The Flight Schedule Display System is a web-based application designed to visualize flight and maintenance schedules through Gantt charts. This system provides an intuitive interface for users to easily track and manage flight operations and maintenance activities. The system consists of a React-based frontend for visualization and a NestJS backend for data management.
 
 
 ![Demo](./docs/5.png)
 
-## 2. Architecture
-
-### 2.1 High-Level Architecture
-```
-┌─────────────┐         ┌─────────────┐         ┌─────────────┐
-│   Frontend  │ ←─HTTP─→│   Backend   │ ←─────→│  Database   │
-│   (React)   │         │   (NestJS)  │         │  (MongoDB)  │
-└─────────────┘         └─────────────┘         └─────────────┘
-```
-
-### 2.2 Backend Architecture
+##  Architecture
+### Backend Architecture
 - **Framework**: NestJS with TypeScript
 - **API Endpoints**:
   - POST `/api/flights` - Create new flight records
-
 
   ![Add Flight](./docs/1.png)
 
@@ -30,16 +38,16 @@ The Flight Schedule Display System is a web-based application that visualizes fl
   - `FlightService`: Implements business logic
   - `FlightModule`: Configures dependencies
 
-### 2.3 Frontend Architecture
+### Frontend Architecture
 - **Framework**: React with TypeScript
 - **State Management**: Zustand
 - **Key Components**:
   - Flight Gantt Chart Component
   - Data Adapters for API Integration
 
-## 3. Data Models
+## Data Models
 
-### 3.1 Flight Schema
+### Flight Schema
 ```typescript
 interface Flight {
   planeId: string;
@@ -50,9 +58,9 @@ interface Flight {
 }
 ```
 
-## 4. Component Details
+##  Component Details
 
-### 4.1 Backend Components
+### Backend Components
 - **Flight Controller**:
   - Handles REST API endpoints
   - Implements input validation
@@ -63,9 +71,9 @@ interface Flight {
   - Handles data persistence
   - Manages flight scheduling rules
 
-### 4.2 Frontend Components
+### Frontend Components
 
-#### 4.2.1 Component Structure
+#### Component Structure
 ```
 frontend/src/
 ├── components/
@@ -75,10 +83,11 @@ frontend/src/
 │       ├── index.tsx            # Main Gantt component
 │       └── until.ts             # Utility functions
 ├── adapters/                    # API integration adapters
+├── mocks/                       # mock data
 └── store.ts                     # State management
 ```
 
-#### 4.2.2 Key Components
+#### Key Components
 
 ##### Flight Gantt Component
 - **Purpose**: Main container component for flight scheduling visualization
@@ -101,15 +110,15 @@ frontend/src/
 - **Features**:
   - Render each aircraft's name
 
-#### 4.2.3 Component Interactions
+#### Component Interactions
 
 ![Component Interactions](./docs/2.png)
 
-#### 4.2.4 State Management
+#### State Management
 - **Global State** (Zustand):
   - Flight data
 
-#### 4.2.5 Data Flow
+#### Data Flow
 1. Data Fetching:
    - Call the back-end api to get all the flight data
 2. Data format conversion
@@ -119,9 +128,9 @@ frontend/src/
    - Render the maintenance Gantt chart   
 
 
-## 5. API Endpoints
+##  API Endpoints
 
-### 5.1 Create Flight
+###  Create Flight
 ```
 POST /flights
 Content-Type: application/json
@@ -136,7 +145,7 @@ Request Body:
 }
 ```
 
-### 5.2 Get Flights
+###  Get Flights
 ```
 GET /flights
 Content-Type: application/json
@@ -155,13 +164,13 @@ Response Body:
 ]
 ```
 
-## 6. Technologies Used
+## Technologies Used
 
 ### 6.1 Backend
 - NestJS
 - TypeScript
 - MongoDB
-- Class-validator for validation
+- Class-validator
 
 ### 6.2 Frontend
 - React
